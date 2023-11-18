@@ -1,0 +1,28 @@
+.navbar-color {
+    background-color: rgb(167, 125, 216);
+}
+
+.btn-color {
+    background-color: rgb(171, 138, 209);
+}
+
+.text-desc {
+    color: rgb(48, 133, 190);
+}
+
+input, .radio {
+    display: none;
+}
+
+#starRating > label:hover,
+#starRating > label:hover ~ label,
+#starRating > input:checked ~ label  {
+  color: #ffc107;
+}
+
+#starRating > label:hover,
+#starRating > label:hover ~ label,
+#starRating > input:checked ~ label {
+    color: #ffc107;
+}
+  
