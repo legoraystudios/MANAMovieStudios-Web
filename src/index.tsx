@@ -4,14 +4,16 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './Routes/Home';
 import SignIn from './Routes/Signin';
 import SignOut from './Routes/Signout';
+import Register from './Routes/Register';
 import Movie from './Routes/Movie';
+import Dashboard from './Routes/Dashboard';
 import reportWebVitals from './reportWebVitals';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import "bootstrap-icons/font/bootstrap-icons.css";
-import './Components/Styles/Styles.css';
 import 'bootstrap/dist/js/bootstrap.js';
+import './Components/Styles/Styles.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -22,7 +24,9 @@ root.render(
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signout" element={<SignOut />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/movie/:id" element={<Movie />} />
+      <Route path="/dashboard/" element={<Dashboard />} />
     </Routes>
   </BrowserRouter>
 );

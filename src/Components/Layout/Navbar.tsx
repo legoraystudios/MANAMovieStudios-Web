@@ -2,10 +2,16 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import React from 'react';
 
 interface UserProperties {
   firstName: String;
   lastName: String;
+}
+
+interface CategoryProperties {
+  id: any,
+  categoryName: string;
 }
 
 
@@ -13,6 +19,7 @@ function Navbar() {
 
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState("");
+    const [categories, setCategories] = useState<CategoryProperties[]>([]);
     const navigate = useNavigate();
 
 
@@ -39,9 +46,30 @@ function Navbar() {
     
   }
 
+  const getCategories = async () => {
+
+    try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/category/`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const data = await response.json();
+        setCategories(data);
+    } catch (err) {
+        navigate("?errorApiConn")
+        console.log(err);
+    }
+
+}
+
   useEffect(() => {
     setLoggedIn(false);
     verifyUser();
+    getCategories();
   }, [])
 
     return(
@@ -61,7 +89,7 @@ function Navbar() {
                       <a className="nav-link text-white" href="/">Movies</a>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link text-white" href="/">Top Reviews</a>
+                      <a className="nav-link text-white" href="/" data-bs-toggle="collapse" data-bs-target="#collapseFindByCategory" aria-expanded="false" aria-controls="collapseFindByCategory">Find By Category</a>
                     </li>
                   </ul>
                 </div>
@@ -75,7 +103,7 @@ function Navbar() {
                               <i className="bi bi-person-fill"></i> Hey, {user}
                               </a>
                               <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="#"><i className="bi bi-person-lines-fill"></i> My Profile</a></li>
+                                <li><a className="dropdown-item" href="/dashboard"><i className="bi bi-person-lines-fill"></i> My Profile</a></li>
                                 <li><a className="dropdown-item text-success" href="#"><i className="bi bi-file-earmark-plus"></i> Create a Movie</a></li>
                                 <li><a className="dropdown-item text-danger" href="/signout"><i className="bi bi-box-arrow-left"></i> Sign Out</a></li>
                               </ul>
@@ -91,6 +119,29 @@ function Navbar() {
                 </div>
               </div>
             </nav>
+
+            <div className="">
+              <div className="collapse" id="collapseFindByCategory">
+                <div className="card card-body container">
+                  <p className="mx-5">Categories:</p>
+                    <div>
+                      <ul className="nav justify-content-around">
+                        {
+                          categories && categories.map(record => {
+                            return(
+                            
+                                  <li key={record.id} className="nav-item">
+                                    <a className="nav-link active" aria-current="page" href="#">{record.categoryName}</a>
+                                  </li>
+                            )
+                          })
+                        }
+                      </ul>
+                    </div>
+                </div>
+              </div>
+            </div>
+
         </div>
         )
 }

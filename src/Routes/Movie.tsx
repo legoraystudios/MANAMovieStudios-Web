@@ -2,9 +2,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, } from 'react';
 import Navbar from '../Components/Layout/Navbar';
 import Footer from '../Components/Layout/Footer';
-import TestImg from '../Components/Images/titanic.png';
+import Poster from '../Components/Images/poster.png';
 import Stars from '../Components/Layout/Stars';
 import Alerts from '../Components/Layout/Alerts';
+import 'bootstrap/dist/js/bootstrap.js';
 
 interface MovieProperties {
     id: any;
@@ -28,6 +29,7 @@ interface MovieProperties {
 }
 
 interface ReviewProperties {
+    id: any;
     reviewTitle: string;
     reviewText: string;
     reviewRating: any;
@@ -38,13 +40,6 @@ interface ReviewProperties {
     }
 }
 
-interface SubmitReviewProperties {
-    reviewTitle: string;
-    reviewText: string;
-    reviewRating: any;
-    movieId: any;
-}
-
 function Movie() {
 
     const { id } = useParams();
@@ -52,13 +47,19 @@ function Movie() {
     const [reviews, setReviews] = useState<ReviewProperties[]>([]);
     const [overallRating, setOverallRating] = useState(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const loggedUsername = ""
+    const [loggedUsername, setLoggedUsername] =useState("");
 
     // Variables for submitReview()
     const [reviewTitle, setReviewTitle] = useState("");
     const [reviewText, setReviewText] = useState("");
     const [reviewRating, setReviewRating] = useState(1);
     const [movieId, setMovieId] = useState(id);
+
+    // Variables for editReview()
+    const [reviewId, setReviewId] = useState("");
+    const [editReviewTitle, setEditReviewTitle] = useState("");
+    const [editReviewText, setEditReviewText] = useState("");
+    const [editReviewRating, setEditReviewRating] = useState(1);
 
     const navigate = useNavigate();
 
@@ -92,8 +93,11 @@ function Movie() {
             }
         })
 
+        const data = await response.json();
+
         if (response.status === 200) {
             setIsLoggedIn(true);
+            setLoggedUsername(data.username);
         } else {
             setIsLoggedIn(false);
         }
@@ -134,13 +138,60 @@ function Movie() {
 
             if (response.status === 200) {
                 navigate(`/movie/${id}?successCreateReview`);
+                window.location.reload();
             } else {
-                navigate('/signin?error');
+                navigate(`/movie/${id}?error`);
+                window.location.reload();
             }
 
         } catch (err) {
             navigate("?errorApiConn")
             console.log(err);
+        }
+
+    }
+
+    const deleteReview = async (reviewId: any) => {
+        
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/reviews/${reviewId}`, {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            navigate(`/movie/${id}?successDeletedReview`);
+            window.location.reload();
+        } else {
+            navigate(`/movie/${id}?error`);
+            window.location.reload();
+        }
+
+    }
+
+    const editReview = async (event: any) => {
+
+        event.preventDefault();
+
+        const payload = {reviewTitle: editReviewTitle, reviewRating: editReviewRating, reviewText: editReviewText};
+        
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/reviews/${reviewId}`, {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+
+        if (response.status === 200) {
+            navigate(`/movie/${id}?successEditedReview`);
+            window.location.reload();
+        } else {
+            navigate(`/movie/${id}?error`);
+            window.location.reload();
         }
 
     }
@@ -156,7 +207,7 @@ function Movie() {
     if (movie !== null) {
         return(
             <div>
-
+                
                 <Navbar />
 
                 {movie ? (
@@ -176,7 +227,7 @@ function Movie() {
 
                             <div className="row">
                                 <div className="col-sm-4">
-                                    <img src={TestImg} alt="" height={350} />
+                                    <img src={Poster} alt="" height={350} />
 
                                 </div>
                                 
@@ -203,55 +254,41 @@ function Movie() {
                             { isLoggedIn === true ? (
                         <>
 
-                    <form>
+                    <form onSubmit={submitReview}>
                         <div className="my-5">
                             <h5>Write a Review:</h5>
 
                         <div className="mb-3">
                             <label className="form-label">Title</label>
-                            <input type="text" className="form-control" placeholder="" />
+                            <input type="text" className="form-control" placeholder="" value={reviewTitle} onChange={(e) => setReviewTitle(e.target.value)} required/>
                         </div>
 
                         <div>
                             <label className="form-label">Rating</label>
                         </div>
-                            <div className="form-check form-check-inline" id="starRating">
-                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="oneStarRating" value="1" checked/>
-                                <label className="form-check-label" htmlFor={"oneStarRating"}>
-                                    <i className="bi bi-star-fill list-inline-item fs-4"></i>
-                                </label>
-                            </div>
-                            <div className="form-check form-check-inline" id="starRating">
-                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="twoStarRating" value="2" />
-                                <label className="form-check-label" htmlFor={"twoStarRating"}>
-                                    <i className="bi bi-star-fill list-inline-item fs-4"></i>
-                                </label>
-                            </div>
-                            <div className="form-check form-check-inline" id="starRating">
-                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="threeStarRating" value="3" />
-                                <label className="form-check-label" htmlFor={"threeStarRating"}>
-                                    <i className="bi bi-star-fill list-inline-item fs-4"></i>
-                                </label>
-                            </div>
-                            <div className="form-check form-check-inline" id="starRating">
-                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="fourStarRating" value="4" />
-                                <label className="form-check-label" htmlFor={"fourStarRating"}>
-                                    <i className="bi bi-star-fill list-inline-item fs-4"></i>
-                                </label>
-                            </div>
-                            <div className="form-check form-check-inline" id="starRating">
-                                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="fiveStarRating" value="5" />
-                                <label className="form-check-label" htmlFor={"fiveStarRating"}>
-                                    <i className="bi bi-star-fill list-inline-item fs-4"></i>
-                                </label>
-                            </div>
+                        
+                        <input type="radio" className="btn-check" name="options-base" id="option1" value="1" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                        <label className="btn btn-outline-warning" htmlFor="option1"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                        <input type="radio" className="btn-check" name="options-base" id="option2" value="2" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                        <label className="btn btn-outline-warning" htmlFor="option2"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                        <input type="radio" className="btn-check" name="options-base" id="option3" value="3" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                        <label className="btn btn-outline-warning" htmlFor="option3"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                        <input type="radio" className="btn-check" name="options-base" id="option4" value="4" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                        <label className="btn btn-outline-warning" htmlFor="option4"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                        <input type="radio" className="btn-check" name="options-base" id="option5" value="5" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                        <label className="btn btn-outline-warning" htmlFor="option5"><i className="bi bi-star-fill list-inline-item"></i></label>
 
                             <div className="my-3">
                               <label className="form-label">Comments</label>
-                              <textarea className="form-control" id="exampleFormControlTextarea1" rows={3}></textarea>
+                              <textarea className="form-control" id="exampleFormControlTextarea1" rows={3}
+                              value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
                             </div>
 
-                            <button type="submit" className="btn btn-color text-white">Submit</button>
+                            <button type="submit" className="btn btn-color">Create Review</button>
 
                         </div>
                     </form>
@@ -300,9 +337,70 @@ function Movie() {
                                 <div className="card-body">
 
                                 {record.user.username === loggedUsername ? (
+                                <div>
                                     <div className="float-end">
-                                        <button type="button" className="btn btn-outline-danger"><i className="bi bi-trash-fill"></i></button>
+                                        <button type="button" className="btn btn-outline-primary mx-1" data-bs-toggle="modal" data-bs-target={`#editReview-${record.id}`} onClick={
+                                            () => {
+                                                setEditReviewTitle(record.reviewTitle);
+                                                setEditReviewRating(record.reviewRating);
+                                                setEditReviewText(record.reviewText);
+                                                setReviewId(record.id);
+                                            }
+
+                                        }><i className="bi bi-pencil-fill"></i></button>
+                                        <button type="button" className="btn btn-outline-danger" onClick={(e) => deleteReview(record.id)}><i className="bi bi-trash-fill"></i></button>
                                     </div>
+
+                                    {/* Edit Review Modal */}
+
+                                    <div className="modal fade" id={`editReview-${record.id}`} tabIndex={-1} aria-labelledby="editModalLabel" aria-hidden="true">
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                            <div className="modal-header">
+                                              <h1 className="modal-title fs-5" id="exampleModalLabel">Edit Review</h1>
+                                              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                                <div className="modal-body">
+                                                    <form onSubmit={editReview}>
+                                                        <div className="mb-3">
+                                                            <label className="form-label">Title</label>
+                                                            <input type="text" className="form-control" name="editReviewTitle" value={editReviewTitle} onChange={(e) => setEditReviewTitle(e.target.value)} required/>
+                                                        </div>
+
+                                                        <div>
+                                                            <label className="form-label">Rating</label>
+                                                        </div>
+                                                        <input type="radio" className="btn-check" name="editoptions-base" id="option6" value={1} onChange={(e: any) => setEditReviewRating(parseInt(e.target.value))}/>
+                                                        <label className="btn btn-outline-warning" htmlFor="option6"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                                                        <input type="radio" className="btn-check" name="editoptions-base" id="option7" value={2} onChange={(e: any) => setEditReviewRating(parseInt(e.target.value))}/>
+                                                        <label className="btn btn-outline-warning" htmlFor="option7"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                                                        <input type="radio" className="btn-check" name="editoptions-base" id="option8" value={3} onChange={(e: any) => setEditReviewRating(parseInt(e.target.value))}/>
+                                                        <label className="btn btn-outline-warning" htmlFor="option8"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                                                        <input type="radio" className="btn-check" name="editoptions-base" id="option9" value={4} onChange={(e: any) => setEditReviewRating(parseInt(e.target.value))}/>
+                                                        <label className="btn btn-outline-warning" htmlFor="option9"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                                                        <input type="radio" className="btn-check" name="editoptions-base" id="option10" value={5} onChange={(e: any) => setEditReviewRating(parseInt(e.target.value))}/>
+                                                        <label className="btn btn-outline-warning" htmlFor="option10"><i className="bi bi-star-fill list-inline-item"></i></label>
+
+                                                            <div className="my-3">
+                                                              <label className="form-label">Comments</label>
+                                                              <textarea className="form-control" name="editReviewText" id="editReviewText" rows={3}
+                                                              value={editReviewText} onChange={(e) => setEditReviewText(e.target.value)}></textarea>
+                                                            </div>
+                                                        <div className="modal-footer">
+                                                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                          <button type="submit" className="btn btn-primary">Save changes</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 ) : (
                                     <div></div>
                                 )
@@ -336,6 +434,8 @@ function Movie() {
                     <a href="/">Back to home</a>
 
                 </div>
+
+                <Footer />
                 
     
             </div>

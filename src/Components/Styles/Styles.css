@@ -4,25 +4,14 @@
 
 .btn-color {
     background-color: rgb(171, 138, 209);
+    color: white;
+}
+
+.btn-color:hover {
+    background-color: rgb(148, 99, 204);
+    color: white;
 }
 
 .text-desc {
     color: rgb(48, 133, 190);
 }
-
-input, .radio {
-    display: none;
-}
-
-#starRating > label:hover,
-#starRating > label:hover ~ label,
-#starRating > input:checked ~ label  {
-  color: #ffc107;
-}
-
-#starRating > label:hover,
-#starRating > label:hover ~ label,
-#starRating > input:checked ~ label {
-    color: #ffc107;
-}
-  

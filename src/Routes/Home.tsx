@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Alerts from '../Components/Layout/Alerts';
 import Navbar from '../Components/Layout/Navbar';
 import Footer from '../Components/Layout/Footer';
-import TestImg from '../Components/Images/titanic.png';
+import Poster from '../Components/Images/poster.png';
 import Stars from '../Components/Layout/Stars';
 
 interface MovieProperties {
@@ -31,7 +31,7 @@ function Home() {
     const fetchMovies = async () => {
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/movies/`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/movies/top`, {
                 method: "GET",
                 credentials: "include",
                 headers: {
@@ -46,9 +46,6 @@ function Home() {
             navigate("?errorApiConn")
             console.log(err);
         }
-        
-
-
 
     }
 
@@ -77,7 +74,7 @@ function Home() {
                         <div className="container pt-4 border-top">
                             <div className="row">
                                 <div className="col-sm-4">
-                                    <img src={TestImg} alt="" height={150} />
+                                    <img src={Poster} alt="" height={150} />
         
                                 </div>
                                 <div className="col-sm-8 list-inline">
