@@ -1,46 +1,40 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# MANAMovieStudios-Web
 
-## Available Scripts
+A NodeJS/React Movie Database to display movie general information, categories, and leave reviews.
 
-In the project directory, you can run:
+![App Screenshot](https://legoray.com/assets/images/MANAMovieStudios-screenshot.png)
 
-### `npm start`
+I've been created this project for a class in my University. This project intends to reflect knowledge about RESTful API's and the Create, Read, Update and Delete (CRUD) operations in a database.
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+*   You need to have installed MANAMovieStudios-Core in your Server as a RESTful API Server. You can clone the repository [here](https://github.com/legoraystudios/MANAMovieStudios-Core).
+*   NodeJS 18.14 or later installed in your system.
+## Installation
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Download [here](https://github.com/legoraystudios/MANAMovieStudios-Web.git) or clone it in a empty folder with the following command (Requires Git)
 
-### `npm test`
+```bash
+git clone https://github.com/legoraystudios/MANAMovieStudios-Web.git
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Extract all the files on the folder if there's on a `.zip` file.
 
-### `npm run build`
+3. Open the `.env` file on the project and replace `REACT_APP_BACKEND_HOST` with your actual RESTful API URL.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```js
+REACT_APP_BACKEND_HOST="http://localhost:8080"
+```
+(This is necessary due avoid issues with the CORS Policy and Headers).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Run `npm install` to install all the dependencies in the package.json.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. When the dependencies are installed, run `npm start` to start a project in a development build, or `npm run build` for a production build.
+    
+## Dependencies
 
-### `npm run eject`
+For this project, I used the following dependencies:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+*   [Bootstrap](https://getbootstrap.com/)
+*   react-router-dom
+*   [react-datepicker](https://reactdatepicker.com/)
