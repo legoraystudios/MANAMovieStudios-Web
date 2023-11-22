@@ -123,15 +123,14 @@ function Navbar() {
             <div className="">
               <div className="collapse" id="collapseFindByCategory">
                 <div className="card card-body container">
-                  <p className="mx-5">Categories:</p>
-                    <div>
+                  <p className="mx-1">Categories:</p>
+                    <div className="d-flex flex-wrap">
                       <ul className="nav justify-content-around">
                         {
                           categories && categories.map(record => {
                             return(
-                            
                                   <li key={record.id} className="nav-item">
-                                    <a className="nav-link active" aria-current="page" href="#">{record.categoryName}</a>
+                                    <a className="nav-link active" aria-current="page" href={`/category/${record.id}`}>{record.categoryName}</a>
                                   </li>
                             )
                           })

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './Routes/Home';
+import Category from './Routes/Category';
 import SignIn from './Routes/Signin';
 import SignOut from './Routes/Signout';
 import Register from './Routes/Register';
@@ -27,6 +28,7 @@ root.render(
       <Route path="/register" element={<Register />} />
       <Route path="/movie/:id" element={<Movie />} />
       <Route path="/dashboard/" element={<Dashboard />} />
+      <Route path="/category/:id" element={<Category />} />
     </Routes>
   </BrowserRouter>
 );

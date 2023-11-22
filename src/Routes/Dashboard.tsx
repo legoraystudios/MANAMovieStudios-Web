@@ -7,6 +7,7 @@ import Navbar from '../Components/Layout/Navbar';
 import Footer from '../Components/Layout/Footer';
 import { usePopper } from 'react-popper';
 import { StringLiteral } from 'typescript';
+import { create } from 'domain';
 
 interface AccountProperties {
     id: any,
@@ -121,6 +122,38 @@ function Profile() {
     
             const data = await response.json();
             setCategories(data);
+        } catch (err) {
+            navigate("?errorApiConn")
+            console.log(err);
+        }
+
+    }
+
+    const createMovie = async (event: any) => {
+
+        event.preventDefault();
+
+        try {
+
+            const payload = {movieName: movieName, moviePlot: moviePlot, movieDirector: movieDirector, movieActors: movieActors, categoryId: movieCategory}
+
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/movies/create`, {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+
+            if (response.status === 200) {
+                navigate("/dashboard?movies&successCreatedMovie");
+                window.location.reload();
+            } else {
+                navigate("/dashboard?movies&errorMovieExist");
+                window.location.reload();
+            }
+
         } catch (err) {
             navigate("?errorApiConn")
             console.log(err);
@@ -303,7 +336,20 @@ function Profile() {
 
                         <div className="container my-5">
                         <Alerts />
+
+                        <div className="d-flex justify-content-between">
                             <h3 className="my-3">My Movies</h3>
+                            <button type="button" className="btn btn-success" data-bs-toggle="modal" data-bs-target="#createMovie" onClick={
+                                () => {
+                                    setMovieName("");
+                                    setMoviePlot("");
+                                    setMovieDirector("");
+                                    setMovieCategory("");
+                                    setMovieActors("");
+                                }
+
+                            }><i className="bi bi-plus-lg"></i> Create Movie</button>
+                        </div>
 
                                 {
                                     myMovies.map(movieRecord => {
@@ -414,6 +460,65 @@ function Profile() {
                                     })
                                 }
 
+                        </div>
+
+                        {/* Create Movie Modal */}
+
+                        <div className="modal fade" id="createMovie" tabIndex={-1} aria-labelledby="createMovieModal" aria-hidden="true">
+                          <div className="modal-dialog">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h1 className="modal-title fs-5" id="exampleModalLabel">Create Movie</h1>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <form onSubmit={createMovie}>
+                                <div className="modal-body">
+                                    <div className="row">
+                                      <div className="mb-3 col-sm-12">
+                                          <label className="form-label">Movie Title</label>
+                                          <input type="text" className="form-control" name="editReviewTitle" value={movieName} onChange={(e) => setMovieName(e.target.value)} required/>
+                                      </div>
+                                      </div>
+                                      <div className="row">
+                                          <div className="mb-3 col-sm-12">
+                                              <label className="form-label">Movie Plot</label>
+                                              <textarea className="form-control" name="editReviewText" id="editReviewText" rows={3} value={moviePlot} onChange={(e) => setMoviePlot(e.target.value)}></textarea>
+                                          </div>
+                                      </div>
+                                    <div className="row">
+                                        <div className="mb-3 col-sm-6">
+                                            <label className="form-label">Director</label>
+                                            <input type="text" className="form-control" name="editReviewTitle" value={movieDirector} onChange={(e) => setMovieDirector(e.target.value)} required/>
+                                        </div>
+                                        <div className="col-sm-6">
+                                            <label className="form-label">Genre</label>
+                                                <select className="form-select" value={movieCategory} onChange={(e) => setMovieCategory(e.target.value)}>
+                                                    {
+                                                        categories && categories.map(record => {
+                                                            return(
+                                                                <option value={record.id}>{record.categoryName}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="mb-3 col-sm-12">
+                                            <label className="form-label">Actors</label>
+                                            <input type="text" className="form-control" name="editReviewTitle" value={movieActors} onChange={(e) => setMovieActors(e.target.value)} placeholder="Separate by a comma (,)" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                              <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" className="btn btn-success"><i className="bi bi-plus-lg"></i> Create Movie</button>
+                              </div>
+
+                            </form>
+                            </div>
+                          </div>
                         </div>
 
                     </body>

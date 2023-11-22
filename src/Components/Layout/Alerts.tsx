@@ -60,6 +60,24 @@ function Alerts(): JSX.Element {
                 </div>
             </div>
         )
+    } else if(queryParams.has("successCreatedMovie")) {
+        return (
+            <div>
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    System | Movie created successfully.
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
+    } else if(queryParams.has("successMovieExist")) {
+        return (
+            <div>
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    System | Movie already exist in our records.
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        )
     } else if(queryParams.has("successDeletedReview")) {
         return (
             <div>
