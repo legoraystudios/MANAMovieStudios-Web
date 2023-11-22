@@ -88,7 +88,9 @@ function Category() {
                             <div className="container pt-4 border-top">
                                 <div className="row">
                                     <div className="col-sm-4">
-                                        <img src={Poster} alt="" height={150} />
+                                        <a href={`/movie/${record.id}`}>
+                                            <img src={Poster} alt="" height={150} />
+                                        </a>
                             
                                     </div>
                                     <div className="col-sm-8 list-inline">

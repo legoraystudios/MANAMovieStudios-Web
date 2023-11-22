@@ -8,6 +8,7 @@ import SignOut from './Routes/Signout';
 import Register from './Routes/Register';
 import Movie from './Routes/Movie';
 import Dashboard from './Routes/Dashboard';
+import AllMovies from './Routes/AllMovies';
 import reportWebVitals from './reportWebVitals';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,6 +16,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/js/bootstrap.js';
 import './Components/Styles/Styles.css';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -29,6 +31,7 @@ root.render(
       <Route path="/movie/:id" element={<Movie />} />
       <Route path="/dashboard/" element={<Dashboard />} />
       <Route path="/category/:id" element={<Category />} />
+      <Route path="/search/allmovies" element={<AllMovies />} />
     </Routes>
   </BrowserRouter>
 );

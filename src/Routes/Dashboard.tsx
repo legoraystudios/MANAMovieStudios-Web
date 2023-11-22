@@ -138,7 +138,7 @@ function Profile() {
             const payload = {movieName: movieName, moviePlot: moviePlot, movieDirector: movieDirector, movieActors: movieActors, categoryId: movieCategory}
 
             const response = await fetch(`${process.env.REACT_APP_BACKEND_HOST}/movies/create`, {
-                method: "PUT",
+                method: "POST",
                 credentials: "include",
                 headers: {
                     'Content-Type': 'application/json'
@@ -287,10 +287,6 @@ function Profile() {
                                         <tr>
                                             <td>Date of Birth: {loggedAccount.dob}</td>
                                         </tr>
-                                        <tr>
-                                        <td><button type="button" className="btn btn-primary my-1"><i className="bi bi-pencil-fill"></i> Edit Account</button>
-                                            <button type="button" className="btn btn-danger mx-2"><i className="bi bi-trash-fill"></i> Delete</button></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -339,12 +335,11 @@ function Profile() {
 
                         <div className="d-flex justify-content-between">
                             <h3 className="my-3">My Movies</h3>
-                            <button type="button" className="btn btn-success" data-bs-toggle="modal" data-bs-target="#createMovie" onClick={
+                            <button type="button" className="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#createMovie" onClick={
                                 () => {
                                     setMovieName("");
                                     setMoviePlot("");
                                     setMovieDirector("");
-                                    setMovieCategory("");
                                     setMovieActors("");
                                 }
 
@@ -493,6 +488,7 @@ function Profile() {
                                         <div className="col-sm-6">
                                             <label className="form-label">Genre</label>
                                                 <select className="form-select" value={movieCategory} onChange={(e) => setMovieCategory(e.target.value)}>
+                                                        <option value="-1">Select...</option>
                                                     {
                                                         categories && categories.map(record => {
                                                             return(

@@ -69,7 +69,7 @@ function Alerts(): JSX.Element {
                 </div>
             </div>
         )
-    } else if(queryParams.has("successMovieExist")) {
+    } else if(queryParams.has("errorMovieExist")) {
         return (
             <div>
                 <div className="alert alert-danger alert-dismissible fade show" role="alert">

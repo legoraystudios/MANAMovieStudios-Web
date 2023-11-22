@@ -86,7 +86,7 @@ function Navbar() {
                       <a className="nav-link text-white active" aria-current="page" href="/">Home</a>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link text-white" href="/">Movies</a>
+                      <a className="nav-link text-white" href="/search/allmovies">Movies</a>
                     </li>
                     <li className="nav-item">
                       <a className="nav-link text-white" href="/" data-bs-toggle="collapse" data-bs-target="#collapseFindByCategory" aria-expanded="false" aria-controls="collapseFindByCategory">Find By Category</a>
@@ -104,7 +104,7 @@ function Navbar() {
                               </a>
                               <ul className="dropdown-menu">
                                 <li><a className="dropdown-item" href="/dashboard"><i className="bi bi-person-lines-fill"></i> My Profile</a></li>
-                                <li><a className="dropdown-item text-success" href="#"><i className="bi bi-file-earmark-plus"></i> Create a Movie</a></li>
+                                <li><a className="dropdown-item text-success" href="/dashboard?movies"><i className="bi bi-camera-reels"></i> My Movies</a></li>
                                 <li><a className="dropdown-item text-danger" href="/signout"><i className="bi bi-box-arrow-left"></i> Sign Out</a></li>
                               </ul>
                             </li>
