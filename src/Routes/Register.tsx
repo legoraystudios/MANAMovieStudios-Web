@@ -44,9 +44,9 @@ function Home() {
             })
 
             if (response.status === 200) {
-                navigate('/');
+                navigate(`${process.env.REACT_APP_BASENAME}/`);
             } else {
-                navigate('/register?registerError');
+                navigate(`${process.env.REACT_APP_BASENAME}/register?registerError`);
             }
 
         } catch (err) {
@@ -118,7 +118,7 @@ function Home() {
                         </div>
 
                     <div>
-                        <a href="/signin">Already registered? Sign In.</a><br />
+                        <a href={`${process.env.REACT_APP_BASENAME}/signin`}>Already registered? Sign In.</a><br />
                         <button type="submit" className="btn btn-color my-3">Sign In</button>
                     </div>
                 </form>

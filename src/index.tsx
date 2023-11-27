@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Routes/Home';
 import Category from './Routes/Category';
 import SignIn from './Routes/Signin';
@@ -21,8 +21,10 @@ import './Components/Styles/Styles.css';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
-  <BrowserRouter>
+  <React.StrictMode>
+  <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
@@ -34,6 +36,7 @@ root.render(
       <Route path="/search/allmovies" element={<AllMovies />} />
     </Routes>
   </BrowserRouter>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

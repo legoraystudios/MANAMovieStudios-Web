@@ -27,6 +27,7 @@ function Home() {
 
     const [movies, setMovies] = useState<MovieProperties[]>([]);
     const [overallRating, setOverallRating] = useState(0);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const fetchMovies = async () => {
 
@@ -41,6 +42,7 @@ function Home() {
     
             const data = await response.json();
             setMovies(data);
+            setIsLoaded(true);
 
         } catch (err) {
             navigate("?errorApiConn")
@@ -66,32 +68,42 @@ function Home() {
                     <Alerts />
                 </div>
 
-                
-                
-                {
-                    movies && movies.map( record => {
-                        return(
-                        <div className="container pt-4 border-top">
-                            <div className="row">
-                                <div className="col-sm-4">
-                                    <a href={`/movie/${record.id}`}>
-                                        <img src={Poster} alt="" height={150} />
-                                    </a>
-        
+        	{!isLoaded ? (
+                <>
+                    <div className="d-flex justify-content-center">
+                      <div className="spinner-grow" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    </div>
+                </>
+            ) : (
+                <>
+                    {
+                        movies && movies.map( record => {
+                            return(
+                            <div className="container pt-4 border-top">
+                                <div className="row">
+                                    <div className="col-sm-4">
+                                        <a href={`${process.env.REACT_APP_BASENAME}/movie/${record.id}`}>
+                                            <img src={Poster} alt="" height={150} />
+                                        </a>
+                            
+                                    </div>
+                                    <div className="col-sm-8 list-inline">
+                                        <h5 className="list-inline-item"><a href={`${process.env.REACT_APP_BASENAME}/movie/${record.id}`} className="text-decoration-none text-secondary">{record.movieName}</a></h5>
+                                        <span key={record.id} className="badge rounded-pill text-bg-info list-inline-item">{record.category.categoryName}</span>
+                                        <p>{record.moviePlot}</p>
+                                        <span>Reviews ({record.reviewsCount}):</span>
+                                            {Stars(record.overallRating)}
+                                    </div>
+                                    <div className="border-bottom pb-4"></div>
                                 </div>
-                                <div className="col-sm-8 list-inline">
-                                    <h5 className="list-inline-item"><a href={`/movie/${record.id}`} className="text-decoration-none text-secondary">{record.movieName}</a></h5>
-                                    <span key={record.id} className="badge rounded-pill text-bg-info list-inline-item">{record.category.categoryName}</span>
-                                    <p>{record.moviePlot}</p>
-                                    <span>Reviews ({record.reviewsCount}):</span>
-                                        {Stars(record.overallRating)}
-                                </div>
-                                <div className="border-bottom pb-4"></div>
                             </div>
-                        </div>
-                        )
-                    })
-                }
+                            )
+                        })
+                    }
+                </>
+            )}
 
                 <Footer />
 

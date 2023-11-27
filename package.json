@@ -1,6 +1,7 @@
 {
   "name": "mms-frontend",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@types/jquery": "^3.5.27",
     "@types/js-cookie": "^3.0.6",
-    "@types/react-datepicker": "^4.19.3"
+    "@types/react-datepicker": "^4.19.3",
+    "@types/react-router-dom": "^5.3.3"
   }
 }

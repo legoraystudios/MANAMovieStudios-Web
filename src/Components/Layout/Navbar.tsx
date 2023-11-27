@@ -76,20 +76,20 @@ function Navbar() {
         <div>
             <nav className="navbar navbar-color navbar-expand-lg">
               <div className="container-fluid">
-                <a className="navbar-brand text-white" href="/">MANAMovieStudios</a>
+                <a className="navbar-brand text-white" href={`${process.env.REACT_APP_BASENAME}/`}>MANAMovieStudios</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                   <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
                   <ul className="navbar-nav">
                     <li className="nav-item">
-                      <a className="nav-link text-white active" aria-current="page" href="/">Home</a>
+                      <a className="nav-link text-white active" aria-current="page" href={`${process.env.REACT_APP_BASENAME}/`}>Home</a>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link text-white" href="/search/allmovies">Movies</a>
+                      <a className="nav-link text-white" href={`${process.env.REACT_APP_BASENAME}/search/allmovies`}>Movies</a>
                     </li>
                     <li className="nav-item">
-                      <a className="nav-link text-white" href="/" data-bs-toggle="collapse" data-bs-target="#collapseFindByCategory" aria-expanded="false" aria-controls="collapseFindByCategory">Find By Category</a>
+                      <a className="nav-link text-white" href={`${process.env.REACT_APP_BASENAME}/`} data-bs-toggle="collapse" data-bs-target="#collapseFindByCategory" aria-expanded="false" aria-controls="collapseFindByCategory">Find By Category</a>
                     </li>
                   </ul>
                 </div>
@@ -103,13 +103,13 @@ function Navbar() {
                               <i className="bi bi-person-fill"></i> Hey, {user}
                               </a>
                               <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="/dashboard"><i className="bi bi-person-lines-fill"></i> My Profile</a></li>
-                                <li><a className="dropdown-item text-success" href="/dashboard?movies"><i className="bi bi-camera-reels"></i> My Movies</a></li>
-                                <li><a className="dropdown-item text-danger" href="/signout"><i className="bi bi-box-arrow-left"></i> Sign Out</a></li>
+                                <li><a className="dropdown-item" href={`${process.env.REACT_APP_BASENAME}/dashboard`}><i className="bi bi-person-lines-fill"></i> My Profile</a></li>
+                                <li><a className="dropdown-item text-success" href={`${process.env.REACT_APP_BASENAME}/dashboard?movies`}><i className="bi bi-camera-reels"></i> My Movies</a></li>
+                                <li><a className="dropdown-item text-danger" href={`${process.env.REACT_APP_BASENAME}/signout`}><i className="bi bi-box-arrow-left"></i> Sign Out</a></li>
                               </ul>
                             </li>
                           ) : (
-                            <a className="nav-link text-white" href="/signin">
+                            <a className="nav-link text-white" href={`${process.env.REACT_APP_BASENAME}/signin`}>
                               <i className="bi bi-person-fill"></i> Sign In
                             </a>
                           )}                          
@@ -130,7 +130,7 @@ function Navbar() {
                           categories && categories.map(record => {
                             return(
                                   <li key={record.id} className="nav-item">
-                                    <a className="nav-link active" aria-current="page" href={`/category/${record.id}`}>{record.categoryName}</a>
+                                    <a className="nav-link active" aria-current="page" href={`${process.env.REACT_APP_BASENAME}/category/${record.id}`}>{record.categoryName}</a>
                                   </li>
                             )
                           })

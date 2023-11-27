@@ -20,21 +20,35 @@ git clone https://github.com/legoraystudios/MANAMovieStudios-Web.git
 
 2. Extract all the files on the folder, if present, into a `.zip` file.
 
-3. Open the `.env` file on the project and replace `REACT_APP_BACKEND_HOST` with your actual RESTful API URL.
+3. Open the `.env` file on the project and replace `REACT_APP_BACKEND_HOST` with your actual RESTful API URL:
 
 ```js
 REACT_APP_BACKEND_HOST="http://localhost:8080"
 ```
 (This is necessary to avoid issues with CORS Policy and Headers).
 
-4. Run `npm install` to install all the dependencies in package.json.
+4. Modify `"homepage": "."` on `package.json` with your actual domain and path in case that you want to host this app into a web server.
 
-5. When dependencies are installed, run `npm start` to start a project in a development build, or `npm run build` for a production build.
+5. If you're going to host this app inside of a directory on a web server, specify the directory that you want to host the website (for example: https://example.com/mywebsite):
+
+```js
+REACT_APP_BASENAME="/mywebsite"
+```
+
+If your going to host this app on the domain root, you can leave it by default: 
+```js
+REACT_APP_BASENAME="/"
+```
+
+6. Run `npm install` to install all the dependencies in package.json.
+
+7. When dependencies are installed, run `npm start` to start a project in a development build, or `npm run build` for a production build.
     
 ## Dependencies
 
 For this project, I used the following dependencies:
 
 *   [Bootstrap](https://getbootstrap.com/)
+*   [bootstrap-icons](https://icons.getbootstrap.com/)
 *   react-router-dom
 *   [react-datepicker](https://reactdatepicker.com/)

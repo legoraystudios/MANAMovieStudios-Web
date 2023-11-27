@@ -5,9 +5,6 @@ import Stars from '../Components/Layout/Stars';
 import Alerts from '../Components/Layout/Alerts';
 import Navbar from '../Components/Layout/Navbar';
 import Footer from '../Components/Layout/Footer';
-import { usePopper } from 'react-popper';
-import { StringLiteral } from 'typescript';
-import { create } from 'domain';
 
 interface AccountProperties {
     id: any,
@@ -47,10 +44,11 @@ interface ReviewProperties {
 function Profile() {
 
     const [loggedAccount, setLoggedAccount] = useState<AccountProperties | null>(null);
-    const [searchUrlParams, setSearchUrlParams] = useSearchParams();
+    const [searchUrlParams] = useSearchParams();
     const [myMovies, setMyMovies] = useState<MovieProperties[]>([]);
     const [categories, setCategories] = useState<CategoryProperties[]>([]);
     const [myReviews, setMyReviews] = useState<ReviewProperties[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();
 
     // Variables for editMovie();
@@ -79,8 +77,9 @@ function Profile() {
                 setLoggedAccount(data);
                 getMyMovies(data.id);
                 getMyReviews(data.id);
+                setIsLoaded(true);
             } else {
-                navigate("/signin");
+                navigate(`${process.env.REACT_APP_BASENAME}/signin`);
             }
         } catch (err) {
             navigate("?errorApiConn")
@@ -102,6 +101,7 @@ function Profile() {
     
             const data = await response.json();
             setMyMovies(data);
+            setIsLoaded(true);
         } catch (err) {
             navigate("?errorApiConn")
             console.log(err);
@@ -147,10 +147,10 @@ function Profile() {
             })
 
             if (response.status === 200) {
-                navigate("/dashboard?movies&successCreatedMovie");
+                navigate(`/dashboard?movies&successCreatedMovie`);
                 window.location.reload();
             } else {
-                navigate("/dashboard?movies&errorMovieExist");
+                navigate(`/dashboard?movies&errorMovieExist`);
                 window.location.reload();
             }
 
@@ -179,10 +179,10 @@ function Profile() {
             })
 
             if (response.status === 200) {
-                navigate("/dashboard?movies&successEditedMovie");
+                navigate(`/dashboard?movies&successEditedMovie`);
                 window.location.reload();
             } else {
-                navigate("/dashboard?movies&error");
+                navigate(`/dashboard?movies&error`);
                 window.location.reload();
             }
 
@@ -205,10 +205,10 @@ function Profile() {
             })
 
             if (response.status === 200) {
-                navigate("/dashboard?movies&successDeletedMovie");
+                navigate(`/dashboard?movies&successDeletedMovie`);
                 window.location.reload();
             } else {
-                navigate("/dashboard?movies&error");
+                navigate(`/dashboard?movies&error`);
                 window.location.reload();
             }
 
@@ -232,6 +232,7 @@ function Profile() {
             if(response.status === 200) {
                 const data = await response.json();
                 setMyReviews(data);
+                setIsLoaded(true);
             }
 
         } catch (err) {
@@ -252,40 +253,41 @@ function Profile() {
 
             <Navbar />
 
-            {loggedAccount ? (
+            {!isLoaded ? (
+                <>
                 <body>
                     <div className="container my-5">
-                        <a href="/" className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
-                        <h3 key={loggedAccount.id}>Hey, {loggedAccount.firstName}!</h3>
-                            <p>Welcome to your personal area.</p>
+                        <a href={`${process.env.REACT_APP_BASENAME}/`} className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
+                        <h3><span className="placeholder col-2"></span></h3>
+                            <p><span className="placeholder col-3"></span></p>
                     </div>
-
+            
                     <div className="container mt-3">
                         <ul className="nav nav-tabs">
                           <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="/dashboard?profile">Profile</a>
+                            <a className="nav-link active" aria-current="page" href={`${process.env.REACT_APP_BASENAME}/dashboard?profile`}>Profile</a>
                           </li>
                           <li className="nav-item">
-                            <a className="nav-link" href="/dashboard?movies">My Movies</a>
+                            <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}/dashboard?movies`}>My Movies</a>
                           </li>
                           <li className="nav-item">
-                            <a className="nav-link" href="/dashboard?reviews">My Reviews</a>
+                            <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}/dashboard?reviews`}>My Reviews</a>
                           </li>
                         </ul>
                     </div>
-
+            
                     <div className="container">
                     <Alerts />
                         <div className="row">
                             <div className="col-sm-6 mt-3">
-                                <h5>Account Information:</h5>
+                                <h5><span className="placeholder col-7"></span></h5>
                                 <table className="table w-50">
                                     <tbody>
                                         <tr>
-                                          <td>Name: {loggedAccount.firstName} {loggedAccount.lastName}</td>
+                                          <td><span className="placeholder col-7"></span></td>
                                         </tr>
                                         <tr>
-                                            <td>Date of Birth: {loggedAccount.dob}</td>
+                                            <td><span className="placeholder col-7"></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -293,9 +295,56 @@ function Profile() {
                         </div>
                     </div>
                 </body>
+                </>
             ) : (
-                <div></div>
+                <>
+                    {loggedAccount ? (
+                        <body>
+                            <div className="container my-5">
+                                <a href={`${process.env.REACT_APP_BASENAME}/`} className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
+                                <h3 key={loggedAccount.id}>Hey, {loggedAccount.firstName}!</h3>
+                                    <p>Welcome to your personal area.</p>
+                            </div>
+                    
+                            <div className="container mt-3">
+                                <ul className="nav nav-tabs">
+                                  <li className="nav-item">
+                                    <a className="nav-link active" aria-current="page" href={`${process.env.REACT_APP_BASENAME}/dashboard?profile`}>Profile</a>
+                                  </li>
+                                  <li className="nav-item">
+                                    <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}/dashboard?movies`}>My Movies</a>
+                                  </li>
+                                  <li className="nav-item">
+                                    <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}/dashboard?reviews`}>My Reviews</a>
+                                  </li>
+                                </ul>
+                            </div>
+                    
+                            <div className="container">
+                            <Alerts />
+                                <div className="row">
+                                    <div className="col-sm-6 mt-3">
+                                        <h5>Account Information:</h5>
+                                        <table className="table w-50">
+                                            <tbody>
+                                                <tr>
+                                                  <td>Name: {loggedAccount.firstName} {loggedAccount.lastName}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Date of Birth: {loggedAccount.dob}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </body>
+                    ) : (
+                        <div></div>
+                    )}
+                </>
             )}
+
 
 
 
@@ -311,7 +360,7 @@ function Profile() {
                     <body>
 
                         <div className="container my-5">
-                            <a href="/" className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
+                            <a href={`${process.env.REACT_APP_BASENAME}/`} className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
                             <h3 key={loggedAccount?.id}>Hey, {loggedAccount?.firstName}!</h3>
                                 <p>Welcome to your personal area.</p>
                         </div>
@@ -319,13 +368,13 @@ function Profile() {
                         <div className="container mt-5">
                             <ul className="nav nav-tabs">
                               <li className="nav-item">
-                                <a className="nav-link" aria-current="page" href="/dashboard?profile">Profile</a>
+                                <a className="nav-link" aria-current="page" href={`${process.env.REACT_APP_BASENAME}/dashboard?profile`}>Profile</a>
                               </li>
                               <li className="nav-item">
-                                <a className="nav-link active" href="/dashboard?movies">My Movies</a>
+                                <a className="nav-link active" href={`${process.env.REACT_APP_BASENAME}/dashboard?movies`}>My Movies</a>
                               </li>
                               <li className="nav-item">
-                                <a className="nav-link" href="/dashboard?reviews">My Reviews</a>
+                                <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}/dashboard?reviews`}>My Reviews</a>
                               </li>
                             </ul>
                         </div>
@@ -345,7 +394,16 @@ function Profile() {
 
                             }><i className="bi bi-plus-lg"></i> Create Movie</button>
                         </div>
-
+                            {!isLoaded ? (
+                                <>
+                                <div className="d-flex justify-content-center">
+                                  <div className="spinner-grow" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                  </div>
+                                </div>
+                                </>
+                            ) : (
+                                <>
                                 {
                                     myMovies.map(movieRecord => {
                                         return(
@@ -378,8 +436,8 @@ function Profile() {
                                                       <div className="accordion-body list-inline">
                                                         <div className="row align-items-center">
                                                             <div className="col-sm-6 flex-column mb-3">
-                                                                <a href={`/movie/${movieRecord.id}`}><img src={Poster} alt="" height={350} /></a>
-                                                                    <a type="button" className="btn btn-color d-flex col-2 mt-2" href={`/movie/${movieRecord.id}`}>View More</a>
+                                                                <a href={`${process.env.REACT_APP_BASENAME}/movie/${movieRecord.id}`}><img src={Poster} alt="" height={350} /></a>
+                                                                    <a type="button" className="btn btn-color d-flex col-2 mt-2" href={`${process.env.REACT_APP_BASENAME}/movie/${movieRecord.id}`}>View More</a>
                                                             </div>
                                                             <div className="col-sm-6">
                                                                 <h5 className="list-inline-item text-desc">Movie Plot:</h5> <p className="list-inline-item">{movieRecord.moviePlot}</p><br />
@@ -454,6 +512,11 @@ function Profile() {
                                         )
                                     })
                                 }
+                                </>
+                            )
+
+                            }
+                                
 
                         </div>
 
@@ -531,7 +594,7 @@ function Profile() {
                     <body>
 
                         <div className="container my-5">
-                            <a href="/" className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
+                            <a href={`${process.env.REACT_APP_BASENAME}/`} className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
                             <h3 key={loggedAccount?.id}>Hey, {loggedAccount?.firstName}!</h3>
                                 <p>Welcome to your personal area.</p>
                         </div>
@@ -539,13 +602,13 @@ function Profile() {
                         <div className="container mt-3">
                             <ul className="nav nav-tabs">
                               <li className="nav-item">
-                                <a className="nav-link" aria-current="page" href="/dashboard?profile">Profile</a>
+                                <a className="nav-link" aria-current="page" href={`${process.env.REACT_APP_BASENAME}/dashboard?profile`}>Profile</a>
                               </li>
                               <li className="nav-item">
-                                <a className="nav-link" href="/dashboard?movies">My Movies</a>
+                                <a className="nav-link" href={`${process.env.REACT_APP_BASENAME}/dashboard?movies`}>My Movies</a>
                               </li>
                               <li className="nav-item">
-                                <a className="nav-link active" href="/dashboard?reviews">My Reviews</a>
+                                <a className="nav-link active" href={`${process.env.REACT_APP_BASENAME}/dashboard?reviews`}>My Reviews</a>
                               </li>
                             </ul>
                         </div>
@@ -553,27 +616,41 @@ function Profile() {
 
                         <div className="container my-5">
                         <h3 className="my-3">My Reviews</h3>
-                            {
-                                myReviews.map (record => {
-                                    return(
-                                        <div>
-                                            <div className="card ms-5 my-3">
-                                                <div className="card-body">
-                                                    <div className="float-end">
-                                                        <a type="button" className="btn btn-outline-secondary" href={`/movie/${record.movieId}`}>View More</a>
+
+                        {!isLoaded ? (
+                            <>
+                                <div className="d-flex justify-content-center">
+                                  <div className="spinner-grow" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                  </div>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                {
+                                    myReviews.map (record => {
+                                        return(
+                                            <div>
+                                                <div className="card ms-5 my-3">
+                                                    <div className="card-body">
+                                                        <div className="float-end">
+                                                            <a type="button" className="btn btn-outline-secondary" href={`${process.env.REACT_APP_BASENAME}/movie/${record.movieId}`}>View More</a>
+                                                        </div>
+                                                    <div className="list-inline">
+                                                        <h5 className="text-body-secondary list-inline-item">{record.reviewTitle}</h5>
+                                                        <span className="badge rounded-pill text-bg-info list-inline-item">{record.movies.movieName}</span>
+                                                        {Stars(record.reviewRating)}
                                                     </div>
-                                                <div className="list-inline">
-                                                    <h5 className="text-body-secondary list-inline-item">{record.reviewTitle}</h5>
-                                                    <span className="badge rounded-pill text-bg-info list-inline-item">{record.movies.movieName}</span>
-                                                    {Stars(record.reviewRating)}
-                                                </div>
-                                                    <p className="float-start text-body-secondary ms-5">{record.reviewText}</p>
+                                                        <p className="float-start text-body-secondary ms-5">{record.reviewText}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )
-                                })
-                            }
+                                        )
+                                    })
+                                }
+                            </>
+                        )}
+                            
                         </div>
 
                     </body>
@@ -583,7 +660,7 @@ function Profile() {
             
         )
     } else {
-        navigate("/dashboard?profile");
+        navigate(`/dashboard?profile`);
     }
 
     return(

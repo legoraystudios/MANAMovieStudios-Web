@@ -17,9 +17,9 @@ function Logout() {
           })
     
           if(response.status === 200) {
-            navigate("/?successLoggedOut");
+            navigate(`/?successLoggedOut`);
           } else {
-            navigate("/?error");
+            navigate(`/?error`);
           }
     
         } catch (err) {

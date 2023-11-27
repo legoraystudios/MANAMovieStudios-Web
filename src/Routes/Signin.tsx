@@ -28,9 +28,9 @@ function Home() {
             })
 
             if (response.status === 200) {
-                navigate('/dashboard');
+                navigate(`/dashboard`);
             } else {
-                navigate('/signin?signInError');
+                navigate(`/signin?signInError`);
             }
 
         } catch (err) {
@@ -66,7 +66,7 @@ function Home() {
                       <input type="password" className="form-control" id="exampleInputPassword1" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div>
-                        <a href="/register">New here? Register now.</a><br />
+                        <a href={`${process.env.REACT_APP_BASENAME}/register`}>New here? Register now.</a><br />
                         <button type="submit" className="btn btn-color my-3">Sign In</button>
                     </div>
                 </form>

@@ -48,12 +48,13 @@ function Movie() {
     const [overallRating, setOverallRating] = useState(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loggedUsername, setLoggedUsername] =useState("");
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // Variables for submitReview()
     const [reviewTitle, setReviewTitle] = useState("");
     const [reviewText, setReviewText] = useState("");
     const [reviewRating, setReviewRating] = useState(1);
-    const [movieId, setMovieId] = useState(id);
+    const [movieId] = useState(id);
 
     // Variables for editReview()
     const [reviewId, setReviewId] = useState("");
@@ -80,6 +81,8 @@ function Movie() {
             setOverallRating(ratingObject);
             setMovie(data);
         }
+
+        setIsLoaded(true);
 
     }
 
@@ -203,21 +206,31 @@ function Movie() {
         validateSession();
     }, [])
 
-
-    if (movie !== null) {
         return(
             <div>
                 
                 <Navbar />
 
-                {movie ? (
+                {!isLoaded ? (
+                    <>
+                    <div className="containter mt-5">
+                        <div className="d-flex justify-content-center">
+                            <div className="spinner-grow" role="status">
+                              <span className="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    </>
+                ) : (
+                    <>
+                    {movie !== null ? (
                     <>
 
                     <div className="container mt-5">
 
                     <Alerts />
 
-                        <a href="/" className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
+                        <a href={`${process.env.REACT_APP_BASENAME}/`} className="py-2"><i className="bi bi-arrow-90deg-up"></i> Home</a>
 
                         <div className="list-inline">
                             <h2 key={movie.id} className="list-inline-item mb-5">{movie.movieName}</h2>
@@ -252,60 +265,60 @@ function Movie() {
                             </div>
 
                             { isLoggedIn === true ? (
-                        <>
+                                <>
 
-                    <form onSubmit={submitReview}>
-                        <div className="my-5">
-                            <h5>Write a Review:</h5>
+                                    <form onSubmit={submitReview}>
+                                        <div className="my-5">
+                                            <h5>Write a Review:</h5>
 
-                        <div className="mb-3">
-                            <label className="form-label">Title</label>
-                            <input type="text" className="form-control" placeholder="" value={reviewTitle} onChange={(e) => setReviewTitle(e.target.value)} required/>
-                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">Title</label>
+                                            <input type="text" className="form-control" placeholder="" value={reviewTitle} onChange={(e) => setReviewTitle(e.target.value)} required/>
+                                        </div>
 
-                        <div>
-                            <label className="form-label">Rating</label>
-                        </div>
-                        
-                        <input type="radio" className="btn-check" name="options-base" id="option1" value="1" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
-                        <label className="btn btn-outline-warning" htmlFor="option1"><i className="bi bi-star-fill list-inline-item"></i></label>
+                                        <div>
+                                            <label className="form-label">Rating</label>
+                                        </div>
 
-                        <input type="radio" className="btn-check" name="options-base" id="option2" value="2" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
-                        <label className="btn btn-outline-warning" htmlFor="option2"><i className="bi bi-star-fill list-inline-item"></i></label>
+                                        <input type="radio" className="btn-check" name="options-base" id="option1" value="1" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                                        <label className="btn btn-outline-warning" htmlFor="option1"><i className="bi bi-star-fill list-inline-item"></i></label>
 
-                        <input type="radio" className="btn-check" name="options-base" id="option3" value="3" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
-                        <label className="btn btn-outline-warning" htmlFor="option3"><i className="bi bi-star-fill list-inline-item"></i></label>
+                                        <input type="radio" className="btn-check" name="options-base" id="option2" value="2" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                                        <label className="btn btn-outline-warning" htmlFor="option2"><i className="bi bi-star-fill list-inline-item"></i></label>
 
-                        <input type="radio" className="btn-check" name="options-base" id="option4" value="4" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
-                        <label className="btn btn-outline-warning" htmlFor="option4"><i className="bi bi-star-fill list-inline-item"></i></label>
+                                        <input type="radio" className="btn-check" name="options-base" id="option3" value="3" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                                        <label className="btn btn-outline-warning" htmlFor="option3"><i className="bi bi-star-fill list-inline-item"></i></label>
 
-                        <input type="radio" className="btn-check" name="options-base" id="option5" value="5" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
-                        <label className="btn btn-outline-warning" htmlFor="option5"><i className="bi bi-star-fill list-inline-item"></i></label>
+                                        <input type="radio" className="btn-check" name="options-base" id="option4" value="4" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                                        <label className="btn btn-outline-warning" htmlFor="option4"><i className="bi bi-star-fill list-inline-item"></i></label>
 
-                            <div className="my-3">
-                              <label className="form-label">Comments</label>
-                              <textarea className="form-control" id="exampleFormControlTextarea1" rows={3}
-                              value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
-                            </div>
+                                        <input type="radio" className="btn-check" name="options-base" id="option5" value="5" onChange={(e: any) => setReviewRating(parseInt(e.target.value))} />
+                                        <label className="btn btn-outline-warning" htmlFor="option5"><i className="bi bi-star-fill list-inline-item"></i></label>
 
-                            <button type="submit" className="btn btn-color">Create Review</button>
+                                            <div className="my-3">
+                                              <label className="form-label">Comments</label>
+                                              <textarea className="form-control" id="exampleFormControlTextarea1" rows={3}
+                                              value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
+                                            </div>
 
-                        </div>
-                    </form>
+                                            <button type="submit" className="btn btn-color">Create Review</button>
 
-                        </>
-                    ) : (
-                    <div className="my-5">
-                        <h5>Write a Review:</h5>
-                        <div className="list-inline">
-                            <a className="list-inline-item" href="/signin">Sign in</a>
-                            <p className="list-inline-item">for write a review!</p>
-                        </div>
-                    </div>
-                        
-                    )
+                                        </div>
+                                    </form>
 
-                    }
+                                </>
+                                ) : (
+                                    <div className="my-5">
+                                        <h5>Write a Review:</h5>
+                                        <div className="list-inline">
+                                            <a className="list-inline-item" href={`${process.env.REACT_APP_BASENAME}/signin`}>Sign in</a>
+                                            <p className="list-inline-item">for write a review!</p>
+                                        </div>
+                                    </div>
+
+                                )
+
+                            }
 
                         <div className="my-5">
                             <h5>Reviews ({movie.reviewsCount}):</h5>
@@ -315,10 +328,10 @@ function Movie() {
                     </div>
                     </>
                 ) : (
-                    <div className="d-flex justify-content-center my-5">
-                        <div className="spinner-grow text-center" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
+                    <div className="container mt-5 text-center">
+                        <h1 className="text-danger">404 | Not Found</h1>
+                        <p>Hmmm... It seems that the movie that you're looking for has not come out.</p>
+                        <a href={`${process.env.REACT_APP_BASENAME}/`}>Back to home</a>                              
                     </div>
                 )
 
@@ -402,7 +415,7 @@ function Movie() {
                                 </div>
 
                                 ) : (
-                                    <div></div>
+                                    <></>
                                 )
 
                                 }
@@ -415,32 +428,14 @@ function Movie() {
                         )
                     })
                 }
+                    </>
+                )}
     
 
                 <Footer />
     
             </div>
         )
-    } else {
-        return(
-            <div>
-    
-                <Navbar />
-    
-                <div className="container mt-5 text-center">
-
-                    <h1 className="text-danger">404 | Not Found</h1>
-                    <p>Hmmm... It seems that the movie that you're looking for has not come out.</p>
-                    <a href="/">Back to home</a>
-
-                </div>
-
-                <Footer />
-                
-    
-            </div>
-        )
-    }
 
 
 
