@@ -29,7 +29,7 @@ REACT_APP_BACKEND_HOST="http://localhost:8080"
 
 4. Modify `"homepage": "."` on `package.json` with your actual domain and path in case that you want to host this app into a web server.
 
-5. If you're going to host this app inside of a directory on a web server, specify the directory that you want to host the website (for example: https://example.com/mywebsite):
+5. If you're going to host this app inside of a subdirectory on a web server, specify the subdirectory that you want to host the website (for example: https://example.com/mywebsite):
 
 ```js
 REACT_APP_BASENAME="/mywebsite"
