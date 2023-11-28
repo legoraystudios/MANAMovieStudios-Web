@@ -20,7 +20,7 @@ git clone https://github.com/legoraystudios/MANAMovieStudios-Web.git
 
 2. Extract all the files on the folder, if present, into a `.zip` file.
 
-3. Open the `.env` file on the project and replace `REACT_APP_BACKEND_HOST` with your actual RESTful API URL:
+3. Open the `.env` file on the project and replace `REACT_APP_BACKEND_HOST` with your actual RESTful API Server URL:
 
 ```js
 REACT_APP_BACKEND_HOST="http://localhost:8080"
